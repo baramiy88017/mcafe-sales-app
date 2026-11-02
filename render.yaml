@@ -1,0 +1,29 @@
+services:
+  - type: web
+    name: mcafe-sales-app
+    runtime: python
+    plan: starter
+    numInstances: 1
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn wsgi:app --bind 0.0.0.0:$PORT --workers 1 --threads 4 --timeout 30
+    healthCheckPath: /healthz
+    autoDeployTrigger: "off"
+    disk:
+      name: mcafe-data
+      mountPath: /var/data
+      sizeGB: 1
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.14
+      - key: APP_ENV
+        value: production
+      - key: TRUST_PROXY
+        value: "1"
+      - key: DATABASE_PATH
+        value: /var/data/sales.sqlite3
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ADMIN_USERNAME
+        value: owner
+      - key: ADMIN_PASSWORD
+        sync: false

@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#203d32">
+  <title>M Cafe | 売上管理</title>
+  <link rel="stylesheet" href="/style.css">
+  <script src="/app.js" type="module"></script>
+</head>
+<body>
+  <header class="topbar"><a class="brand" href="/" aria-label="M Cafe ホーム"><span class="brand-mark">m.</span><span>M CAFE<small>SALES MANAGEMENT</small></span></a><span class="header-label">売上管理</span><span id="today" class="today"></span><div class="account"><span id="account-name"></span><button id="logout" class="logout-button">ログアウト</button></div></header>
+  <main>
+    <section class="page-heading"><div><p class="eyebrow">YOUR DAILY BUSINESS, AT A GLANCE</p><h1>お店の毎日を、数字で。</h1><p class="muted">日々の売上を記録して、お店の歩みを見渡しましょう。</p></div><button id="add-sale" class="primary">＋ 売上を登録</button></section>
+    <div id="load-error" class="error-banner" role="alert" hidden><span></span><button id="retry">再読み込み</button></div>
+    <section class="stats" aria-label="売上サマリー">
+      <article class="stat featured"><span>今日の売上</span><strong id="today-total">—</strong><small id="today-count">データを読み込み中</small></article>
+      <article class="stat"><span>今月の売上</span><strong id="month-total">—</strong><small id="month-count">データを読み込み中</small></article>
+      <article class="stat"><span>累計売上</span><strong id="all-total">—</strong><small id="all-count">データを読み込み中</small></article>
+    </section>
+    <section class="panel summary-panel"><div class="panel-heading"><div><p class="eyebrow">SALES OVERVIEW</p><h2>売上の集計</h2></div><div class="segmented" role="group" aria-label="集計単位"><button id="daily" aria-pressed="true">日別</button><button id="monthly" aria-pressed="false">月別</button></div></div><p class="muted summary-note" id="summary-note">売上がある日の直近7日分を表示</p><div id="chart" class="chart" aria-label="売上集計"></div><p id="chart-empty" class="empty" hidden>売上を登録すると、ここに集計が表示されます。</p></section>
+    <section class="panel"><div class="panel-heading"><div><p class="eyebrow">SALES RECORDS</p><h2>売上一覧 <span id="record-count" class="badge">0件</span></h2></div><button id="reset-filters" class="text-button">絞り込みを解除</button></div><div class="filters"><label>商品名で検索<input id="search" type="search" placeholder="例：カフェラテ" maxlength="100"></label><label>開始日<input id="from" type="date"></label><span class="date-separator">〜</span><label>終了日<input id="to" type="date"></label></div><p id="filter-error" class="field-error" role="alert" hidden>終了日は開始日以降にしてください。</p><div class="table-scroll"><table><thead><tr><th scope="col">日付</th><th scope="col">商品名</th><th scope="col" class="amount">金額</th><th scope="col"><span class="sr-only">操作</span></th></tr></thead><tbody id="sales-body"></tbody><tfoot><tr><th colspan="2" scope="row">表示中の合計</th><td id="filtered-total" class="amount">—</td><td></td></tr></tfoot></table></div><div id="list-empty" class="empty" hidden><span class="empty-icon">☕</span><h3>まだ売上がありません</h3><p>「売上を登録」から、最初の1件を記録しましょう。</p></div></section>
+    <footer>M CAFE <span>毎日の記録が、明日へのヒントに。</span><small>金額はすべて日本円（円）です。</small></footer>
+  </main>
+  <dialog id="sale-dialog"><form id="sale-form"><div class="dialog-heading"><div><p class="eyebrow">SALES RECORD</p><h2 id="dialog-title">売上を登録</h2></div><button type="button" id="close-dialog" class="close-button" aria-label="閉じる">×</button></div><p class="muted">1件の売上を入力してください。すべて必須項目です。</p><label>日付<input id="sale-date" name="date" type="date" required></label><label>商品名<input id="sale-product" name="product" placeholder="例：カフェラテ" required maxlength="100"></label><label>金額（円）<input id="sale-amount" name="amount" type="number" inputmode="numeric" placeholder="例：550" min="1" max="999999999" step="1" required></label><p id="form-error" class="field-error" role="alert" hidden></p><div class="dialog-actions"><button id="cancel-dialog" type="button" class="secondary">キャンセル</button><button type="submit" id="save-sale" class="primary">登録する</button></div></form></dialog>
+  <dialog id="delete-dialog"><form id="delete-form"><p class="eyebrow">DELETE RECORD</p><h2>売上を削除しますか？</h2><p id="delete-description" class="muted"></p><p class="muted">この操作は取り消せません。</p><p id="delete-error" class="field-error" role="alert" hidden></p><div class="dialog-actions"><button type="button" id="cancel-delete" class="secondary">キャンセル</button><button type="submit" id="confirm-delete" class="danger">削除する</button></div></form></dialog>
+  <div id="toast" class="toast" role="status" hidden></div>
+</body>
+</html>
